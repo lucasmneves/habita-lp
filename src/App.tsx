@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Mascot } from './components/Mascot';
 import { HeroHab } from './components/HeroHab';
@@ -15,8 +15,16 @@ const steps = [
   ['04', 'Celebre cada conquista.', 'Dê valor a cada passo. Até os pequenos merecem uma comemoração.', '✳'],
 ];
 
-export function App() {
+export function App({ onMascotsReady }: { onMascotsReady: () => void }) {
   const [menu, setMenu] = useState(false);
+  const readyMascots = useRef(new Set<string>());
+  const markMascotReady = useCallback((name: string) => {
+    if (readyMascots.current.has(name)) return;
+    readyMascots.current.add(name);
+    if (readyMascots.current.size === 2) onMascotsReady();
+  }, [onMascotsReady]);
+  const markHeaderReady = useCallback(() => markMascotReady('header'), [markMascotReady]);
+  const markHeroReady = useCallback(() => markMascotReady('hero'), [markMascotReady]);
   const active = useJourney();
   const dialog = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -59,7 +67,7 @@ export function App() {
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <header className="site-header">
         <div className="header-brand">
-          <Mascot active={active} />
+          <Mascot active={active} onReady={markHeaderReady} />
           <a className="logo" href="#inicio" aria-label="Habiita, início"><img src={`${base}assets/habiita-logo.png`} alt="Habiita" width="150" height="50" /></a>
         </div>
         <button ref={menuButton} className="menu-toggle" aria-expanded={menu} aria-controls="main-nav" aria-label={menu ? 'Fechar menu' : 'Abrir menu'} onClick={() => setMenu(!menu)}>{menu ? '✕' : '☰'}</button>
@@ -76,7 +84,7 @@ export function App() {
             <div className="actions">{cta()}<a className="text-link" href="#como-funciona">Como funciona <span aria-hidden="true">↓</span></a></div>
             <div className="hero-note"><span className="tiny-seed" aria-hidden="true">✳</span><p>Sem pressa de ser perfeito.<br /><strong>Só a vontade de começar.</strong></p></div>
           </div>
-          <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="hero-portrait"><HeroHab /></div><span className="art-spark spark-one">✳</span><span className="art-spark spark-two">✦</span><div className="floating-tag tag-one"><span>✓</span> Um passo de cada vez</div><div className="floating-tag tag-two"><span>↗</span> Seu próximo capítulo</div><span className="art-caption">CULTIVE O SEU MELHOR.</span></div>
+          <div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="hero-portrait"><HeroHab onReady={markHeroReady} /></div><span className="art-spark spark-one">✳</span><span className="art-spark spark-two">✦</span><div className="floating-tag tag-one"><span>✓</span> Um passo de cada vez</div><div className="floating-tag tag-two"><span>↗</span> Seu próximo capítulo</div><span className="art-caption">CULTIVE O SEU MELHOR.</span></div>
           <div className="hero-bottom"><span>PEQUENAS AÇÕES. NOVAS POSSIBILIDADES.</span><a href="#como-funciona" aria-label="Explorar como funciona">Explore a jornada <span aria-hidden="true">↓</span></a></div>
         </section>
         <div className="principles"><span>Um hábito de cada vez</span><i aria-hidden="true">✳</i><span>No seu próprio ritmo</span><i aria-hidden="true">✳</i><span>Cada passo conta</span><i aria-hidden="true">✳</i><span>Com você na jornada</span></div>

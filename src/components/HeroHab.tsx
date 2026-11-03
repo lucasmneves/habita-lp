@@ -5,7 +5,7 @@ import { HabDrawing } from './HabDrawing';
 RuntimeLoader.setWasmUrl(`${import.meta.env.BASE_URL}assets/rive.wasm`);
 
 /** Aceno oficial de boas-vindas, sem deslocar ou redimensionar o personagem. */
-export function HeroHab() {
+export function HeroHab({ onReady }: { onReady: () => void }) {
   const container = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
@@ -64,7 +64,7 @@ export function HeroHab() {
       layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
       onLoad: () => {
         const vm = rive.viewModelInstance;
-        if (!vm) return;
+        if (!vm) { onReady(); return; }
         const stage = vm.number('stage'); if (stage) stage.value = 2;
         const mood = vm.enum('mood'); if (mood) mood.value = 'happy';
         const energy = vm.number('energy'); if (energy) energy.value = 0.7;
@@ -75,8 +75,9 @@ export function HeroHab() {
         resizeCanvas();
         updatePlayback();
         setReady(true);
+        onReady();
       },
-      onLoadError: () => setReady(false),
+      onLoadError: () => { setReady(false); onReady(); },
     });
 
     const intersection = new IntersectionObserver(entries => {
@@ -97,7 +98,7 @@ export function HeroHab() {
       document.removeEventListener('visibilitychange', updatePlayback);
       rive.cleanup();
     };
-  }, []);
+  }, [onReady]);
 
   return <div className="hero-hab" ref={container}>
     <span className={`hero-hab-fallback ${ready ? 'is-ready' : ''}`}><HabDrawing size={280} face="happy" stage={2} armsUp={false} /></span>

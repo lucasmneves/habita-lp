@@ -5,7 +5,7 @@ import { journey } from '../data/site';
 
 RuntimeLoader.setWasmUrl(`${import.meta.env.BASE_URL}assets/rive.wasm`);
 
-export function Mascot({ active }: { active: number }) {
+export function Mascot({ active, onReady }: { active: number; onReady: () => void }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const runtime = useRef<Rive | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -32,7 +32,7 @@ export function Mascot({ active }: { active: number }) {
       layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
       onLoad: () => {
         const vm = rive.viewModelInstance;
-        if (!vm) return;
+        if (!vm) { onReady(); return; }
         const motion = vm.boolean('reducedMotion'); if (motion) motion.value = reduced.matches;
         const flame = vm.boolean('flameEyes'); if (flame) flame.value = false;
         // Escala constante: rolagem não altera as dimensões do personagem.
@@ -41,8 +41,9 @@ export function Mascot({ active }: { active: number }) {
         lastWidth = 0;
         resizeCanvas();
         setReady(true);
+        onReady();
       },
-      onLoadError: () => setReady(false),
+      onLoadError: () => { setReady(false); onReady(); },
     });
     runtime.current = rive;
     const resize = new ResizeObserver(resizeCanvas);
@@ -58,7 +59,7 @@ export function Mascot({ active }: { active: number }) {
       document.removeEventListener('visibilitychange', visibility);
       rive.cleanup(); runtime.current = null;
     };
-  }, []);
+  }, [onReady]);
 
   useEffect(() => {
     const mood = runtime.current?.viewModelInstance?.enum('mood');
