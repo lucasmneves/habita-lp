@@ -9,9 +9,19 @@ import './styles/modern.css';
 void RuntimeLoader.awaitInstance().catch(() => {});
 const root = document.getElementById('root')!;
 const loader = document.getElementById('site-loader');
+const loaderStartedAt = performance.now();
 let revealed = false;
 const revealSite = () => {
   if (revealed) return;
+  // Uma volta dura 1,8 s: mantém o anel visível por pelo menos uma volta e meia.
+  const animation = loader?.querySelector('.site-loader-arc')?.getAnimations()[0];
+  const elapsed = typeof animation?.currentTime === 'number'
+    ? animation.currentTime : performance.now() - loaderStartedAt;
+  const remaining = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2700 - elapsed;
+  if (remaining > 0) {
+    window.setTimeout(revealSite, Math.ceil(remaining));
+    return;
+  }
   revealed = true;
   window.clearTimeout(fallbackTimer);
   root.removeAttribute('inert');
