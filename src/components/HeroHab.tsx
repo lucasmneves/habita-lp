@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Alignment, Fit, Layout, Rive, RuntimeLoader } from '@rive-app/canvas';
-import wasmUrl from '@rive-app/canvas/rive.wasm?url';
 import { HabDrawing } from './HabDrawing';
 
-RuntimeLoader.setWasmUrl(wasmUrl);
+RuntimeLoader.setWasmUrl(`${import.meta.env.BASE_URL}assets/rive.wasm`);
 
 /** Aceno oficial de boas-vindas, sem deslocar ou redimensionar o personagem. */
 export function HeroHab() {
   const container = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
-  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!canvas.current || !container.current) return;
@@ -78,7 +76,7 @@ export function HeroHab() {
         updatePlayback();
         setReady(true);
       },
-      onLoadError: () => setFailed(true),
+      onLoadError: () => setReady(false),
     });
 
     const intersection = new IntersectionObserver(entries => {
@@ -102,7 +100,7 @@ export function HeroHab() {
   }, []);
 
   return <div className="hero-hab" ref={container}>
-    {failed && <span className="hero-hab-fallback"><HabDrawing size={280} face="happy" stage={2} armsUp={false} /></span>}
-    <canvas ref={canvas} className={`hero-hab-canvas ${ready ? '' : 'hidden'}`} aria-hidden="true" />
+    <span className={`hero-hab-fallback ${ready ? 'is-ready' : ''}`}><HabDrawing size={280} face="happy" stage={2} armsUp={false} /></span>
+    <canvas ref={canvas} className={`hero-hab-canvas ${ready ? 'is-ready' : ''}`} aria-hidden="true" />
   </div>;
 }

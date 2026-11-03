@@ -32,7 +32,7 @@ Links opcionais de privacidade e redes sociais continuam em `src/data/site.ts`.
 
 - `public/assets/habiita-logo.png`: cópia binária do logo fornecido em Downloads, com transparência e proporções preservadas. Nenhuma reconstrução, recorte ou alteração da imagem original.
 - `public/assets/hab.riv`: asset oficial atual de `E:/Claude/Habita/assets/hab/hab.riv`, sem alteração. Artboard `Hab`, state machine `HabMachine`, View Model `Hab`. O runtime utiliza `mood`, `stage`, `energy`, `reducedMotion`, `reaction` e `react`; `flameEyes` permanece desligado.
-- `src/components/HabDrawing.tsx`: fallback SVG oficial do app, adaptado de React Native SVG para elementos SVG nativos da web. Geometria e cores preservadas. Aparece durante carregamento e em caso de falha do Rive.
+- `src/components/HabDrawing.tsx`: fallback SVG oficial do app, adaptado de React Native SVG para elementos SVG nativos da web. Geometria e cores preservadas. O braço direito acena durante o carregamento do Rive e em caso de falha.
 - Fontes locais Plus Jakarta Sans 800 e Inter 400, as mesmas famílias do app. Licenças em `public/assets/*-LICENSE.txt`.
 - Verde do mascote: `#8EE3C1`, `#2E7D6B`, `#1F5A4C`. Superfícies escuras do app: `#17111C`, `#211A28`; detalhes magenta `#E44BC7` e dourado `#E1AA40`. O verde principal da landing e os fundos claros complementam os tokens do app para atender ao briefing; não há afirmação de que o app tenha tema claro.
 - Capturas antigas em `E:/Claude/visual-check` foram avaliadas, mas não utilizadas por estarem desatualizadas em relação ao mascote. A interface da landing é explicitamente **ilustrativa**, com dados de exemplo locais, e não uma screenshot do app. Somente funcionalidades verificadas no código/README do app são descritas.
@@ -40,7 +40,7 @@ Links opcionais de privacidade e redes sociais continuam em `src/data/site.ts`.
 
 ## Mascote e acessibilidade
 
-O header permanece fixo no topo e o Hab animado fica à esquerda do logo. Seu canvas mantém dimensões constantes durante a rolagem; a superfície só é redimensionada quando a área real muda, com densidade limitada a 2×. O estágio permanece em 2, enquanto o humor acompanha a seção visível. A hero usa outra instância do Rive oficial: o Hab acena com a reação `welcomeBack` ao aparecer e repete o aceno com intervalo de oito segundos. Essa instância pausa fora da área visível e em abas ocultas; com movimento reduzido, não agenda acenos. O SVG oficial aparece apenas enquanto o arquivo carrega ou em caso de falha.
+O header permanece fixo no topo e o Hab animado fica à esquerda do logo. Seu canvas mantém dimensões constantes durante a rolagem; a superfície só é redimensionada quando a área real muda, com densidade limitada a 2×. O estágio permanece em 2, enquanto o humor acompanha a seção visível. A hero usa outra instância do Rive oficial: o Hab acena com a reação `welcomeBack` ao aparecer e repete o aceno com intervalo de oito segundos. Essa instância pausa fora da área visível e em abas ocultas; com movimento reduzido, não agenda acenos. O HTML antecipa o download do runtime e do arquivo Rive; o SVG acenando preenche o intervalo até a animação oficial estar pronta.
 
 As falas aparecem por quatro segundos após tocar no Hab, com anúncio acessível e reação oficial `tap`. A faixa inferior e a coluna lateral reservadas ao mascote foram removidas. A página usa rolagem normal, com compensação para a altura do header nas âncoras. `prefers-reduced-motion` continua respeitado no CSS e no View Model do Rive, e o runtime pausa quando a aba fica oculta.
 

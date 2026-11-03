@@ -27,6 +27,12 @@
 .hero-hab { position: relative; width: 280px; aspect-ratio: 120 / 140; max-height: 100%; }
 .hero-hab-canvas, .hero-hab-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-hab-fallback svg { display: block; width: 100%; height: 100%; max-height: none; }
+.header-mascot-canvas, .hero-hab-canvas { opacity: 0; transition: opacity .24s ease; }
+.header-mascot-canvas.is-ready, .hero-hab-canvas.is-ready { opacity: 1; }
+.header-mascot-fallback, .hero-hab-fallback { opacity: 1; transition: opacity .24s ease; }
+.header-mascot-fallback.is-ready, .hero-hab-fallback.is-ready { opacity: 0; pointer-events: none; }
+.header-mascot-fallback .hab-wave-arm, .hero-hab-fallback .hab-wave-arm { transform-box: fill-box; transform-origin: 50% 85%; animation: hab-loading-wave 1.1s ease-in-out infinite alternate; }
+@keyframes hab-loading-wave { from { transform: rotate(-15deg); } to { transform: rotate(19deg); } }
 @media (min-width: 1550px) {
   .section { padding-right: calc((100vw - 1400px) / 2); }
 }
@@ -53,7 +59,7 @@
   .hero-hab { width: 95px; }
   .hero-hab-fallback svg { width: 100%; }
 }
-@media (prefers-reduced-motion: reduce) { .header-speech { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .header-speech, .header-mascot-canvas, .hero-hab-canvas, .header-mascot-fallback, .hero-hab-fallback { transition: none; } .hab-wave-arm { animation: none !important; } }
 
 .button.cta-mobile, .app-access-mobile { display: none; }
 .app-access-content { text-align: center; padding: 32px; }

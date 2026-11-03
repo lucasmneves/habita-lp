@@ -156,7 +156,7 @@ function Arms({ up }: { up: boolean }) {
   return (
     <>
       <ellipse cx="22" cy="98" rx="6.5" ry="15" transform="rotate(32 22 98)" {...arm} />
-      <ellipse cx="102" cy="70" rx="6.5" ry="13" transform="rotate(22 102 70)" {...arm} />
+      <g className="hab-wave-arm"><ellipse cx="102" cy="70" rx="6.5" ry="13" transform="rotate(22 102 70)" {...arm} /></g>
     </>
   );
 }
