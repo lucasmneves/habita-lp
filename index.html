@@ -11,18 +11,25 @@
     <link rel="apple-touch-icon" href="%BASE_URL%assets/habiita-icon.png" />
     <link rel="preload" href="%BASE_URL%assets/rive.wasm" as="fetch" type="application/wasm" crossorigin />
     <link rel="preload" href="%BASE_URL%assets/hab.riv" as="fetch" crossorigin />
-    <style>
-      #site-loader { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; background: #0b2c22; color: #f5f7ef; font-family: Arial, sans-serif; text-align: center; transition: opacity .35s ease, visibility .35s ease; }
+    <link rel="preload" href="%BASE_URL%assets/hab-loader.png" as="image" fetchpriority="high" /><style>
+@font-face{font-family:Jakarta;src:url('%BASE_URL%assets/jakarta-bold.ttf');font-weight:800;font-display:swap}
+@font-face{font-family:Inter;src:url('%BASE_URL%assets/inter.ttf');font-weight:400;font-display:swap}
+
+      #site-loader { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; background: #0b2c22; color: #f5f7ef; font-family: Inter, Arial, sans-serif; text-align: center; transition: opacity .35s ease, visibility .35s ease; }
       #site-loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
       .site-loader-content { display: grid; justify-items: center; gap: 24px; padding: 32px; }
-      .site-loader-mark { position: relative; width: 64px; height: 64px; border: 2px solid rgba(214, 248, 135, .25); border-radius: 50%; animation: loader-pulse 1.8s ease-in-out infinite; }
-      .site-loader-mark::before, .site-loader-mark::after { content: ''; position: absolute; bottom: 19px; left: 29px; width: 14px; height: 27px; border-radius: 100% 0 100% 0; background: #d5fa8a; transform-origin: bottom center; transform: rotate(-42deg); }
-      .site-loader-mark::after { transform: rotate(48deg) scaleX(-1); }
-      .site-loader-name { font-size: 34px; font-weight: 800; letter-spacing: -.06em; line-height: 1; }
+      .site-loader-name { font-family: Jakarta, Arial, sans-serif; font-size: 34px; font-weight: 800; letter-spacing: -.06em; line-height: 1; }
       .site-loader-label { margin: 0; color: #d5e5d8; font-size: 13px; letter-spacing: .08em; }
-      @keyframes loader-pulse { 50% { transform: scale(1.08); border-color: rgba(214, 248, 135, .65); } }
-      @media (prefers-reduced-motion: reduce) { #site-loader { transition: none; } .site-loader-mark { animation: none; } }
-    </style>
+    
+.site-loader-art{position:relative;width:clamp(180px,38vw,260px);aspect-ratio:1}
+.site-loader-art img{display:block;width:100%;height:100%;clip-path:ellipse(34% 33% at 50% 52%)}
+.site-loader-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:rotate(-90deg)}
+.site-loader-track{fill:none;stroke:#216555;stroke-width:4}
+.site-loader-arc{fill:none;stroke:#c0fc60;stroke-width:4;stroke-linecap:round;stroke-dasharray:65 199;transform-origin:50% 50%;filter:drop-shadow(0 0 4px #a7ef5380);animation:loader-orbit 1.8s linear infinite}
+.site-loader-label{letter-spacing:0;line-height:1.7}
+@keyframes loader-orbit{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#site-loader{transition:none}.site-loader-arc{animation:none}}
+</style>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="Habiita" />
@@ -40,7 +47,7 @@
   </head>
   <body>
     <div id="site-loader" role="status" aria-live="polite">
-      <div class="site-loader-content"><span class="site-loader-mark" aria-hidden="true"></span><span class="site-loader-name">habiita</span><p class="site-loader-label">Preparando sua jornada...</p></div>
+      <div class="site-loader-content"><div class="site-loader-art" aria-hidden="true"><img src="%BASE_URL%assets/hab-loader.png" width="260" height="260" alt="" fetchpriority="high" /><svg class="site-loader-ring" viewBox="0 0 100 100"><circle class="site-loader-track" cx="50" cy="50" r="42"/><circle class="site-loader-arc" cx="50" cy="50" r="42"/></svg></div><span class="site-loader-name">habiita</span><p class="site-loader-label">Preparando sua jornada...</p></div>
     </div>
     <div id="root" inert aria-busy="true"></div>
     <script type="module" src="/src/main.tsx"></script>
