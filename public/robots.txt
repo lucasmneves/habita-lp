@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lucasmneves.github.io/habita-lp/sitemap.xml

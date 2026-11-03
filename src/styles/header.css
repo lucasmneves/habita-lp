@@ -1,0 +1,81 @@
+/* Dimensões estáveis evitam redesenhar o buffer do Rive durante a rolagem. */
+.site-scroll { height: auto; overflow: visible; padding-top: 94px; }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 40; }
+.header-brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.header-mascot { position: relative; flex-shrink: 0; }
+.header-mascot-button {
+  display: block; position: relative; width: 60px; height: 70px;
+  padding: 0; border: 0; border-radius: 14px; background: transparent;
+}
+.header-mascot-canvas, .header-mascot-fallback {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.header-mascot-fallback svg { display: block; width: 100%; height: 100%; }
+.header-speech {
+  position: absolute; top: calc(100% + 14px); left: 0; width: 220px;
+  padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px;
+  background: #fffef8; color: var(--ink); font-size: 12px; line-height: 1.6;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .2s ease, visibility .2s ease;
+}
+.header-speech.is-speaking { opacity: 1; visibility: visible; }
+.hero-portrait {
+  position: absolute; inset: 110px 0 45px; display: flex;
+  justify-content: center; align-items: center;
+}
+.hero-portrait svg { width: 280px; height: auto; max-height: 100%; }
+.hero-hab { position: relative; width: 280px; aspect-ratio: 120 / 140; max-height: 100%; }
+.hero-hab-canvas, .hero-hab-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-hab-fallback svg { display: block; width: 100%; height: 100%; max-height: none; }
+@media (min-width: 1550px) {
+  .section { padding-right: calc((100vw - 1400px) / 2); }
+}
+@media (max-width: 800px) {
+  html { scroll-padding-top: 92px; }
+  .site-scroll { padding-top: 76px; }
+  .header-brand { gap: 3px; }
+  .header-mascot-button { width: 46px; height: 58px; }
+  .header-speech { top: calc(100% + 12px); width: min(220px, 80vw); }
+  .site-header { gap: 10px; }
+  .hero-portrait { inset: 38px 0 28px; }
+  .hero-portrait svg { width: 135px; }
+  .hero-hab { width: 135px; }
+  .hero-hab-fallback svg { width: 100%; }
+}
+@media (max-width: 540px) {
+  .header-cta { display: none; }
+  .menu-toggle { margin-left: auto; }
+  .site-header { padding-inline: 6vw; }
+  .header-brand { gap: 6px; }
+  .header-mascot-button { width: 48px; height: 60px; }
+  .hero-portrait { inset: 32px 0 24px; }
+  .hero-portrait svg { width: 95px; }
+  .hero-hab { width: 95px; }
+  .hero-hab-fallback svg { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .header-speech { transition: none; } }
+
+.button.cta-mobile, .app-access-mobile { display: none; }
+.app-access-content { text-align: center; padding: 32px; }
+.app-access-content h2 { font-size: 32px; }
+.app-access-content .eyebrow { justify-content: center; font-size: 8px; margin: 0 0 18px; }
+.app-access-desktop > p, .app-access-mobile > p {
+  margin: 20px 0; color: var(--muted); font-size: 13px; line-height: 1.7;
+}
+.app-qr { width: fit-content; margin: 0 auto 14px; padding: 8px; background: white; border: 1px solid var(--line); border-radius: 16px; }
+.app-qr svg { display: block; max-width: 100%; height: auto; }
+.app-deeplink { font-size: 12px; color: var(--green); }
+.dialog-content.app-access-content > .app-install-note { font-size: 11px; margin: 22px auto 16px; max-width: 290px; text-align: center; }
+.app-demo-link { font-size: 11px; text-decoration: underline; text-underline-offset: 4px; }
+.open-app-page { min-height: 100dvh; max-width: 640px; margin: auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 26px; }
+.open-app-page .eyebrow { margin: 20px 0 0; }
+.open-app-page h1 { font-size: clamp(36px, 7vw, 54px); }
+.open-app-page > p { color: var(--muted); font-size: 14px; }
+.open-app-actions { display: flex; flex-wrap: wrap; gap: 15px; }
+.open-app-page > .open-app-note { font-size: 12px; }
+.open-app-home { text-decoration: underline; text-underline-offset: 4px; font-size: 12px; }
+@media (max-width: 800px) {
+  .button.cta-desktop, .app-access-desktop { display: none; }
+  .button.cta-mobile { display: inline-flex; }
+  .app-access-mobile { display: block; }
+}
